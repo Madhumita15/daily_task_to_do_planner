@@ -8,8 +8,8 @@ class TaskController {
       const { title, description, priority, categoryId, labels, dueDate } =
         req.body;
       const id = req.user._id;
-      console.log(req.body);
-      console.log("labels", labels);
+      const lastTask = await Task.findOne({userId: id}).sort({order: -1})
+      const order = lastTask ? (lastTask.order + 1) : 1
       const newTask = new Task({
         title: title,
         description: description,
@@ -18,6 +18,7 @@ class TaskController {
         labels: labels,
         dueDate: dueDate,
         userId: id,
+        order: order
       });
       const task = await newTask.save();
       if (!task) {
@@ -229,6 +230,48 @@ class TaskController {
         message: error.message,
       });
     }
+  
   }
+
+
+  async reorderTasks(req, res) {
+  try {
+    const userId = req.user._id;
+    const { taskIds } = req.body;
+
+    if (!Array.isArray(taskIds) || taskIds.length === 0) {
+      return res.status(httpStatusCode.BAD_REQUEST).json({
+        success: false,
+        message: "taskIds must be a non-empty array",
+      });
+    }
+
+    const bulkOperations = taskIds.map((taskId, index) => ({
+      updateOne: {
+        filter: {
+          _id: taskId,
+          userId: userId,
+        },
+        update: {
+          $set: {
+            order: index + 1,
+          },
+        },
+      },
+    }));
+
+    await Task.bulkWrite(bulkOperations);
+
+    return res.status(httpStatusCode.OK).json({
+      success: true,
+      message: "Tasks reordered successfully!",
+    });
+  } catch (error) {
+    return res.status(httpStatusCode.SERVER_ERROR).json({
+      success: false,
+      message: error.message,
+    });
+  }
+}
 }
 module.exports = new TaskController();

@@ -1,3 +1,4 @@
+const { required } = require("joi");
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
@@ -39,6 +40,10 @@ const taskSchema = new Schema(
       enum: ["pending", "completed"],
       default: "pending",
     },
+    order: {
+      type: Number,
+      required: true
+    }
   },
   {
     timestamps: true,

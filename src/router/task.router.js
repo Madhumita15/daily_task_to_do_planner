@@ -17,6 +17,10 @@ router.get(
   validation.validate(taskSchemaValidation.taskOperation),
   taskController.getAllTask,
 );
+
+router.patch("/tasks/reorder", authMiddleware.verifyToken, taskController.reorderTasks)
+
+
 router.put(
   "/task/:id",
   authMiddleware.verifyToken,
@@ -30,5 +34,7 @@ router.delete(
 );
 
 router.patch("/task/:id", authMiddleware.verifyToken, taskController.markTaskCompleted)
+
+
 
 module.exports = router;
