@@ -23,10 +23,12 @@ const taskSchema = new Schema(
       required: [true, "Due date is required"],
     },
     categoryId: {
-      type: String,
+      type: Schema.Types.ObjectId,
+      ref: "category"
     },
     labels: {
-      type: [String],
+      type: [Schema.Types.ObjectId],
+      ref: "label"
     },
     userId: {
       type: Schema.Types.ObjectId,
