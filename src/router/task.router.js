@@ -35,6 +35,8 @@ router.delete(
 
 router.patch("/task/:id", authMiddleware.verifyToken, taskController.markTaskCompleted)
 
+router.get("/task-summary", authMiddleware.verifyToken, taskController.summeryOfTask)
+
 
 
 module.exports = router;

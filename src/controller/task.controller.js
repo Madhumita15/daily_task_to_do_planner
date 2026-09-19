@@ -1,6 +1,8 @@
 const httpStatusCode = require("../utils/httpStatusCode");
 const Task = require("../models/task.model");
 const { default: mongoose } = require("mongoose");
+const Category = require("../models/category.model");
+const Labels = require("../models/label.model");
 
 class TaskController {
   async createTask(req, res) {
@@ -8,8 +10,37 @@ class TaskController {
       const { title, description, priority, categoryId, labels, dueDate } =
         req.body;
       const id = req.user._id;
-      const lastTask = await Task.findOne({userId: id}).sort({order: -1})
-      const order = lastTask ? (lastTask.order + 1) : 1
+
+      if (categoryId) {
+        const category = await Category.findOne({
+          _id: categoryId,
+          userId: id,
+        });
+        if (!category) {
+          return res.status(httpStatusCode.NOT_FOUND).json({
+            success: false,
+            message:
+              "Category not found or your are not the owner of this category",
+          });
+        }
+      }
+
+      if (labels || labels.length > 0) {
+        const userLabel = await Labels.find({
+          userId: id,
+          _id: { $in: labels },
+        });
+        if (userLabel.length !== labels.length) {
+          return res.status(httpStatusCode.NOT_FOUND).json({
+            success: false,
+            message:
+              "one or more labels not found or your are not the owner of this labels",
+          });
+        }
+      }
+
+      const lastTask = await Task.findOne({ userId: id }).sort({ order: -1 });
+      const order = lastTask ? lastTask.order + 1 : 1;
       const newTask = new Task({
         title: title,
         description: description,
@@ -18,7 +49,7 @@ class TaskController {
         labels: labels,
         dueDate: dueDate,
         userId: id,
-        order: order
+        order: order,
       });
       const task = await newTask.save();
       if (!task) {
@@ -141,6 +172,34 @@ class TaskController {
       const { title, description, priority, categoryId, labels, dueDate } =
         req.body;
 
+      if (categoryId) {
+        const category = await Category.findOne({
+          _id: categoryId,
+          userId: id,
+        });
+        if (!category) {
+          return res.status(httpStatusCode.NOT_FOUND).json({
+            success: false,
+            message:
+              "Category not found or your are not the owner of this category",
+          });
+        }
+      }
+
+      if (labels || labels.length > 0) {
+        const userLabel = await Labels.find({
+          userId: id,
+          _id: { $in: labels },
+        });
+        if (userLabel.length !== labels.length) {
+          return res.status(httpStatusCode.NOT_FOUND).json({
+            success: false,
+            message:
+              "one or more labels not found or your are not the owner of this labels",
+          });
+        }
+      }
+
       const task = await Task.findOne({ _id: taskId, userId: userId });
       if (!task) {
         return res.status(httpStatusCode.NOT_FOUND).json({
@@ -230,48 +289,112 @@ class TaskController {
         message: error.message,
       });
     }
-  
   }
-
 
   async reorderTasks(req, res) {
-  try {
-    const userId = req.user._id;
-    const { taskIds } = req.body;
+    try {
+      const userId = req.user._id;
+      const { taskIds } = req.body;
 
-    if (!Array.isArray(taskIds) || taskIds.length === 0) {
-      return res.status(httpStatusCode.BAD_REQUEST).json({
-        success: false,
-        message: "taskIds must be a non-empty array",
-      });
-    }
+      if (!Array.isArray(taskIds) || taskIds.length === 0) {
+        return res.status(httpStatusCode.BAD_REQUEST).json({
+          success: false,
+          message: "taskIds must be a non-empty array",
+        });
+      }
 
-    const bulkOperations = taskIds.map((taskId, index) => ({
-      updateOne: {
-        filter: {
-          _id: taskId,
-          userId: userId,
-        },
-        update: {
-          $set: {
-            order: index + 1,
+      const bulkOperations = taskIds.map((taskId, index) => ({
+        updateOne: {
+          filter: {
+            _id: taskId,
+            userId: userId,
+          },
+          update: {
+            $set: {
+              order: index + 1,
+            },
           },
         },
-      },
-    }));
+      }));
 
-    await Task.bulkWrite(bulkOperations);
+      await Task.bulkWrite(bulkOperations);
 
-    return res.status(httpStatusCode.OK).json({
-      success: true,
-      message: "Tasks reordered successfully!",
-    });
-  } catch (error) {
-    return res.status(httpStatusCode.SERVER_ERROR).json({
-      success: false,
-      message: error.message,
-    });
+      return res.status(httpStatusCode.OK).json({
+        success: true,
+        message: "Tasks reordered successfully!",
+      });
+    } catch (error) {
+      return res.status(httpStatusCode.SERVER_ERROR).json({
+        success: false,
+        message: error.message,
+      });
+    }
   }
-}
+
+  async summeryOfTask(req, res) {
+    try {
+      const { type, date } = req.query;
+      const id = req.user._id;
+     
+
+      const dayStart = new Date(date);
+      dayStart.setHours(0, 0, 0, 0);
+
+      let dayEnd;
+
+      if (type === "day") {
+        dayEnd = new Date(dayStart);
+        dayEnd.setDate(dayEnd.getDate() + 1);
+      } else if (type === "week") {
+        const day = dayStart.getDay();
+        const daysFromMonday = day === 0 ? 6 : day - 1;
+
+        dayStart.setDate(dayStart.getDate() - daysFromMonday);
+
+        dayEnd = new Date(dayStart);
+        dayEnd.setDate(dayEnd.getDate() + 7);
+      }
+
+      
+
+      const task = await Task.aggregate([
+        {
+          $match: {
+            userId: id,
+            dueDate: { $gte: dayStart, $lt: dayEnd },
+          },
+        },
+        {
+          $group: {
+            _id: null,
+            totalTask: { $sum: 1 },
+            completedTask: {
+              $sum: { $cond: [{ $eq: ["$status", "completed"] }, 1, 0] },
+            },
+            pendingTask: {
+              $sum: { $cond: [{ $eq: ["$status", "pending"] }, 1, 0] },
+            },
+          },
+        },
+      ]);
+
+      const result = task[0] || {
+        totalTask: 0,
+        completedTask: 0,
+        pendingTask: 0,
+      };
+
+      return res.status(httpStatusCode.OK).json({
+        success: true,
+        message: "Task fetched successfully!",
+        data: result,
+      });
+    } catch (error) {
+      return res.status(httpStatusCode.SERVER_ERROR).json({
+        success: false,
+        message: error.message,
+      });
+    }
+  }
 }
 module.exports = new TaskController();

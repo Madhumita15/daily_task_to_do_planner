@@ -27,6 +27,19 @@ class TaskSchema {
     categoryId: joi.string().optional(),
     labels: joi.array().optional()
   });
+
+  static reminderOperation = joi.object({
+    reminderType: joi.string().valid("once", "daily", "weekly").required().messages({
+      "string.empty": "Task reminder is required",
+      "any.only": "Reminder Types must be one of once, daily, weekly",
+      "any.required": "Task reminder is required"
+
+    }),
+    reminderTime: joi.date().required().messages({
+      "date.base": "Reminder Time must be valid date",
+      "any.required": "Reminder Time is required"
+    })
+  })
 }
 
 module.exports = TaskSchema;

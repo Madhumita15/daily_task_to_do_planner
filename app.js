@@ -7,6 +7,7 @@ const express = require('express');
 const dbCon = require("./src/config/dbCon");
 const app = express()
 const router = require('./src/router/index')
+require('./src/jobs/reminder.jobs')
 
 dbCon()
 
