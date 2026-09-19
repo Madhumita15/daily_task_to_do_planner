@@ -1,0 +1,923 @@
+{
+  "info": {
+    "_postman_id": "9f9f7167-2ac1-4914-b589-281d28dbd673",
+    "name": "daily_to_do",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "55836944",
+    "_collection_link": "https://go.postman.co/collection/55836944-9f9f7167-2ac1-4914-b589-281d28dbd673?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "auth",
+      "item": [
+        {
+          "name": "localhost:3007/api/auth/login",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"email\": \"misti@yopmail.com\",\r\n    \"password\": \"Misti@123\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "localhost:3007/api/auth/login",
+              "host": [
+                "localhost"
+              ],
+              "port": "3007",
+              "path": [
+                "api",
+                "auth",
+                "login"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "localhost:3007/api/auth/verify-email",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"email\": \"misti@yopmail.com\",\r\n    \"otp\": \"9080\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "localhost:3007/api/auth/verify-email",
+              "host": [
+                "localhost"
+              ],
+              "port": "3007",
+              "path": [
+                "api",
+                "auth",
+                "verify-email"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "localhost:3007/api/auth/register",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\": \"Megha Roy\",\r\n    \"email\": \"megha@yopmail.com\",\r\n    \"password\": \"Megha@123\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "localhost:3007/api/auth/register",
+              "host": [
+                "localhost"
+              ],
+              "port": "3007",
+              "path": [
+                "api",
+                "auth",
+                "register"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "localhost:3007/api/user/profile",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{json_web_token_0ozv}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "name",
+              "value": "Megha Sen",
+              "type": "text"
+            },
+            {
+              "key": "email",
+              "value": "megha@yopmail.com",
+              "type": "text"
+            },
+            {
+              "key": "profile_image",
+              "type": "file",
+              "src": [
+                "/C:/Users/Madhu Das/Downloads/jared-rice-NTyBbu66_SI-unsplash (1).jpg"
+              ]
+            }
+          ]
+        },
+        "url": {
+          "raw": "localhost:3007/api/user/profile",
+          "host": [
+            "localhost"
+          ],
+          "port": "3007",
+          "path": [
+            "api",
+            "user",
+            "profile"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "localhost:3007/api/user/profile",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{json_web_token_0ozv}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "localhost:3007/api/user/profile",
+          "host": [
+            "localhost"
+          ],
+          "port": "3007",
+          "path": [
+            "api",
+            "user",
+            "profile"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "localhost:3007/api/user/category/6aabf6b4097fa80675e67045",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{json_web_token_0y2d}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "localhost:3007/api/user/category/6aabf6b4097fa80675e67045",
+          "host": [
+            "localhost"
+          ],
+          "port": "3007",
+          "path": [
+            "api",
+            "user",
+            "category",
+            "6aabf6b4097fa80675e67045"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "localhost:3007/api/user/category/6aabf6b4097fa80675e67045",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{json_web_token_0y2d}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"name\": \"technology update\",\r\n    \"description\": \"technology category description update\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "localhost:3007/api/user/category/6aabf6b4097fa80675e67045",
+          "host": [
+            "localhost"
+          ],
+          "port": "3007",
+          "path": [
+            "api",
+            "user",
+            "category",
+            "6aabf6b4097fa80675e67045"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "localhost:3007/api/user/categories",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{json_web_token_0ozv}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "localhost:3007/api/user/categories",
+          "host": [
+            "localhost"
+          ],
+          "port": "3007",
+          "path": [
+            "api",
+            "user",
+            "categories"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "localhost:3007/api/user/category",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{json_web_token_1d7o}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"name\": \"Projects\",\r\n  \"description\": \"Tasks related to development and personal projects\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "localhost:3007/api/user/category",
+          "host": [
+            "localhost"
+          ],
+          "port": "3007",
+          "path": [
+            "api",
+            "user",
+            "category"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "localhost:3007/api/user/label",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{json_web_token_0y2d}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"name\": \"Meeting\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "localhost:3007/api/user/label",
+          "host": [
+            "localhost"
+          ],
+          "port": "3007",
+          "path": [
+            "api",
+            "user",
+            "label"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "localhost:3007/api/user/labels",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{json_web_token_0y2d}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "localhost:3007/api/user/labels",
+          "host": [
+            "localhost"
+          ],
+          "port": "3007",
+          "path": [
+            "api",
+            "user",
+            "labels"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "localhost:3007/api/user/task/6aacb48075fd46296dd0533e",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{json_web_token_15wo}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "localhost:3007/api/user/task/6aacb48075fd46296dd0533e",
+          "host": [
+            "localhost"
+          ],
+          "port": "3007",
+          "path": [
+            "api",
+            "user",
+            "task",
+            "6aacb48075fd46296dd0533e"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "localhost:3007/api/user/task/6aacb48075fd46296dd0533e",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{json_web_token_15wo}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"title\": \"task1 update\",\r\n    \"description\": \"task1 update description\",\r\n    \"dueDate\": \"2026-09-20T10:30:00.000Z\",\r\n    \"categoryId\": \"6aabf6a0097fa80675e67044\",\r\n    \"labels\": [\"6aac14b5248644af8d830229\"],\r\n    \"priority\": \"High\"\r\n\r\n\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "localhost:3007/api/user/task/6aacb48075fd46296dd0533e",
+          "host": [
+            "localhost"
+          ],
+          "port": "3007",
+          "path": [
+            "api",
+            "user",
+            "task",
+            "6aacb48075fd46296dd0533e"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "localhost:3007/api/user/tasks",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{json_web_token_15wo}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "localhost:3007/api/user/tasks",
+          "host": [
+            "localhost"
+          ],
+          "port": "3007",
+          "path": [
+            "api",
+            "user",
+            "tasks"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "localhost:3007/api/user/task",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{json_web_token_0wgi}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"title\": \"Evening Walk\",\r\n  \"description\": \"Go for a 30 minute evening walk.\",\r\n  \"priority\": \"Low\",\r\n  \"dueDate\": \"2026-09-24T18:30:00.000Z\",\r\n  \"categoryId\": \"6aae3529263a2aa316fe71b8\",\r\n  \"labels\": []\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "localhost:3007/api/user/task",
+          "host": [
+            "localhost"
+          ],
+          "port": "3007",
+          "path": [
+            "api",
+            "user",
+            "task"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "localhost:3007/api/user/tasks",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "localhost:3007/api/user/tasks?labels=6aac14b5248644af8d830229",
+          "host": [
+            "localhost"
+          ],
+          "port": "3007",
+          "path": [
+            "api",
+            "user",
+            "tasks"
+          ],
+          "query": [
+            {
+              "key": "labels",
+              "value": "6aac14b5248644af8d830229"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "localhost:3007/api/user/tasks",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "localhost:3007/api/user/tasks?category=6aabf6a0097fa80675e67044",
+          "host": [
+            "localhost"
+          ],
+          "port": "3007",
+          "path": [
+            "api",
+            "user",
+            "tasks"
+          ],
+          "query": [
+            {
+              "key": "category",
+              "value": "6aabf6a0097fa80675e67044"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "localhost:3007/api/user/tasks",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{json_web_token_098a}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "localhost:3007/api/user/tasks?dueDate=this week",
+          "host": [
+            "localhost"
+          ],
+          "port": "3007",
+          "path": [
+            "api",
+            "user",
+            "tasks"
+          ],
+          "query": [
+            {
+              "key": "dueDate",
+              "value": "this week"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "localhost:3007/api/user/task/6aacb4b975fd46296dd0533f",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{json_web_token_098a}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "PATCH",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"status\": \"completed\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "localhost:3007/api/user/task/6aacb4b975fd46296dd0533f",
+          "host": [
+            "localhost"
+          ],
+          "port": "3007",
+          "path": [
+            "api",
+            "user",
+            "task",
+            "6aacb4b975fd46296dd0533f"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "localhost:3007/api/user/tasks/reorder",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{json_web_token_098a}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "PATCH",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"taskIds\": [\"6aad9531e14f8d47f61ecbe6\", \"6aad949aa5d9bba740b1301a\"]\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "localhost:3007/api/user/tasks/reorder",
+          "host": [
+            "localhost"
+          ],
+          "port": "3007",
+          "path": [
+            "api",
+            "user",
+            "tasks",
+            "reorder"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "localhost:3007/api/user/task/6aae40197cca50a015227908/reminder",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{json_web_token_0wpi}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"reminderType\": \"once\",\r\n  \"reminderTime\": \"2026-09-19T13:40:00+05:30\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "localhost:3007/api/user/task/6aae40197cca50a015227908/reminder",
+          "host": [
+            "localhost"
+          ],
+          "port": "3007",
+          "path": [
+            "api",
+            "user",
+            "task",
+            "6aae40197cca50a015227908",
+            "reminder"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "localhost:3007/api/user/task-summary",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{json_web_token_0wpi}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "localhost:3007/api/user/task-summary?type=day&date=2026-09-23",
+          "host": [
+            "localhost"
+          ],
+          "port": "3007",
+          "path": [
+            "api",
+            "user",
+            "task-summary"
+          ],
+          "query": [
+            {
+              "key": "type",
+              "value": "day"
+            },
+            {
+              "key": "date",
+              "value": "2026-09-23"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "localhost:3007/api/user/task-summary",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{json_web_token_0wpi}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "localhost:3007/api/user/task-summary?type=week&date=2026-09-23",
+          "host": [
+            "localhost"
+          ],
+          "port": "3007",
+          "path": [
+            "api",
+            "user",
+            "task-summary"
+          ],
+          "query": [
+            {
+              "key": "type",
+              "value": "week"
+            },
+            {
+              "key": "date",
+              "value": "2026-09-23"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "localhost:3007/api/user/percentage-task-statistics",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{json_web_token_0wpi}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "localhost:3007/api/user/percentage-task-statistics?type=week&date=2026-09-23",
+          "host": [
+            "localhost"
+          ],
+          "port": "3007",
+          "path": [
+            "api",
+            "user",
+            "percentage-task-statistics"
+          ],
+          "query": [
+            {
+              "key": "type",
+              "value": "week"
+            },
+            {
+              "key": "date",
+              "value": "2026-09-23"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "localhost:3007/api/user/average-task-statistics",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{json_web_token_0wpi}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "localhost:3007/api/user/average-task-statistics",
+          "host": [
+            "localhost"
+          ],
+          "port": "3007",
+          "path": [
+            "api",
+            "user",
+            "average-task-statistics"
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
+  "variable": [
+    {
+      "key": "json_web_token_0ozv",
+      "secret": true
+    },
+    {
+      "key": "json_web_token_0y2d",
+      "secret": true
+    },
+    {
+      "key": "json_web_token_15wo",
+      "secret": true
+    },
+    {
+      "key": "json_web_token_098a",
+      "secret": true
+    },
+    {
+      "key": "json_web_token_0wgi",
+      "secret": true
+    },
+    {
+      "key": "json_web_token_1d7o",
+      "secret": true
+    },
+    {
+      "key": "json_web_token_0wpi",
+      "secret": true
+    }
+  ]
+}
