@@ -37,6 +37,10 @@ router.patch("/task/:id", authMiddleware.verifyToken, taskController.markTaskCom
 
 router.get("/task-summary", authMiddleware.verifyToken, taskController.summeryOfTask)
 
+router.get("/percentage-task-statistics", authMiddleware.verifyToken, taskController.percentageTaskStatistics)
+
+router.get("/average-task-statistics", authMiddleware.verifyToken, taskController.averageTaskStatistics)
+
 
 
 module.exports = router;

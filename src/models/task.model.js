@@ -25,11 +25,11 @@ const taskSchema = new Schema(
     },
     categoryId: {
       type: Schema.Types.ObjectId,
-      ref: "category"
+      ref: "category",
     },
     labels: {
       type: [Schema.Types.ObjectId],
-      ref: "label"
+      ref: "label",
     },
     userId: {
       type: Schema.Types.ObjectId,
@@ -42,8 +42,12 @@ const taskSchema = new Schema(
     },
     order: {
       type: Number,
-      required: true
-    }
+      required: true,
+    },
+    completedAt: {
+      type: Date,
+      default: null,
+    },
   },
   {
     timestamps: true,

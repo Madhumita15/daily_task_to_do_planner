@@ -276,6 +276,7 @@ class TaskController {
       }
 
       task.status = "completed";
+      task.completedAt = new Date();
       const data = await task.save();
 
       return res.status(httpStatusCode.OK).json({
@@ -335,7 +336,6 @@ class TaskController {
     try {
       const { type, date } = req.query;
       const id = req.user._id;
-     
 
       const dayStart = new Date(date);
       dayStart.setHours(0, 0, 0, 0);
@@ -354,8 +354,6 @@ class TaskController {
         dayEnd = new Date(dayStart);
         dayEnd.setDate(dayEnd.getDate() + 7);
       }
-
-      
 
       const task = await Task.aggregate([
         {
@@ -396,5 +394,116 @@ class TaskController {
       });
     }
   }
+
+  async percentageTaskStatistics(req, res) {
+    try {
+      const { type, date } = req.query;
+      const id = req.user._id;
+
+      const dayStart = new Date(date);
+      dayStart.setHours(0, 0, 0, 0);
+
+      let dayEnd;
+
+      if (type === "day") {
+        dayEnd = new Date(dayStart);
+        dayEnd.setDate(dayEnd.getDate() + 1);
+      } else if (type === "week") {
+        const day = dayStart.getDay();
+        const daysFromMonday = day === 0 ? 6 : day - 1;
+
+        dayStart.setDate(dayStart.getDate() - daysFromMonday);
+
+        dayEnd = new Date(dayStart);
+        dayEnd.setDate(dayEnd.getDate() + 7);
+      }
+
+      const task = await Task.aggregate([
+        {
+          $match: {
+            userId: id,
+            dueDate: { $gte: dayStart, $lt: dayEnd },
+          },
+        },
+        {
+          $group: {
+            _id: null,
+            totalTask: { $sum: 1 },
+            completedTask: {
+              $sum: { $cond: [{ $eq: ["$status", "completed"] }, 1, 0] },
+            },
+          },
+        },
+        {
+          $set: {
+            completionRate: {
+              $multiply: [
+                {
+                  $divide: ["$completedTask", "$totalTask"],
+                },
+                100,
+              ],
+            },
+          },
+        },
+      ]);
+
+      const result = task[0] || {
+        totalTask: 0,
+        completedTask: 0,
+        completionRate: 0,
+      };
+
+      return res.status(httpStatusCode.OK).json({
+        success: true,
+        message: "Task fetched successfully!",
+        data: result,
+      });
+    } catch (error) {
+      return res.status(httpStatusCode.SERVER_ERROR).json({
+        success: false,
+        message: error.message,
+      });
+    }
+  }
+
+  async averageTaskStatistics(req, res) {
+    try {
+      const id = req.user._id;
+
+      const task = await Task.aggregate([
+        {
+          $match: {
+            userId: id,
+            status: "completed",
+          },
+        },
+        {
+          $group: {
+            _id: null,
+            averageTime: {$avg: { $subtract: ["$completedAt", "$createdAt"] }}
+          },
+        },
+        {
+          $set: {averageTimeHours: {$round: {$divide: ["$averageTime", 1000 * 60 * 60]}}}
+        },
+        
+      ]);
+
+      return res.status(httpStatusCode.OK).json({
+        success: true,
+        message: "Task fetched successfully!",
+        data: task,
+      });
+    } catch (error) {
+      return res.status(httpStatusCode.SERVER_ERROR).json({
+        success: false,
+        message: error.message,
+      });
+    }
+  }
+
+
+  
 }
 module.exports = new TaskController();

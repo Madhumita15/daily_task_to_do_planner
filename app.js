@@ -8,6 +8,7 @@ const dbCon = require("./src/config/dbCon");
 const app = express()
 const router = require('./src/router/index')
 require('./src/jobs/reminder.jobs')
+require('./src/jobs/summeryEmail.jobs')
 
 dbCon()
 
